@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Nueva canción</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+</head>
+<body>
+	<div class="container">
+		<div id="alerta" class="alert d-none" role="alert">Mensaje de advertencia</div>
+		<div class="row">
+			<div class="col-sm-4">
+				<h2 class="mt-5">Agregar una canción</h2>
+				<form id="formulario">
+					<div class="form-group">
+						<label for="">Nombre</label>
+						<input class="form-control" type="text" id="nombre" name="nombre">
+					</div>
+					<div class="form-group">
+						<label for="">Artista</label>
+						<input class="form-control" type="text" id="artista" name="artista">
+					</div>
+					<div class="form-group">
+						<label for="">Archivo</label>
+						<!--Aceptar archivos MP3's-->
+						<input class="form-control" type="file" id="audioCancion" name="archivo" accept="audio/mp3">
+					</div>
+					<div class="form-group">
+						<label for="">Portada de album</label>
+						<!--Aceptar archivos PNG, JPEG, JPG's-->
+						<input class="form-control" type="file" id="imagenAlbum" name="imagen" accept="image/png, image/jpeg, image/jpg">
+					</div>
+					<button id="addSong" class="btn btn-primary">Agregar</button>
+				</form>
+			</div>
+			<div class="col-sm-4">
+				<h2>Vista previa</h2>
+				<!--<img id="imgPreview" alt="Imagen preview">-->
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+
+		function addSong(event){
+			var inputNombre = document.getElementById("nombre");
+			var inputArtista = document.getElementById("artista");
+			var inputArchivoCancion = document.getElementById("audioCancion");
+			var inputImagenAlbum = document.getElementById("imagenAlbum");
+
+			var nombre = inputNombre.value;
+			var artista = inputArtista.value;
+			var archivoCancion = inputArchivoCancion.files[0];
+			var imagenAlbum = inputImagenAlbum.files[0];
+
+			if(nombre == ""){
+				showAlert("alert-warning", "Completa el campo nombre");
+				return;
+			}
+			if(artista == ""){
+				showAlert("alert-warning", "Completa el campo con el artista");
+				return;
+			}
+			if(archivoCancion == undefined){
+				showAlert("alert-warning", "Elige un archivo de musica");
+				return;
+			}
+			if(imagenAlbum == undefined){
+				showAlert("alert-warning", "Elige un archivo para el album");
+				return;
+			}
+			var aPath = generarURLTemporal(archivoCancion);
+			var iPath = generarURLTemporal(imagenAlbum);
+			saveValueInStorage(nombre, artista, aPath, iPath);
+		}
+
+		function showAlert(type, message) {
+			var divAlert = document.getElementById("alerta");
+			divAlert.innerHTML = message;
+			divAlert.classList.add(type);
+			divAlert.classList.remove("d-none");
+
+			// Esperar 3 segundos para que desaperezca la alerta
+			setTimeout(function(){
+				divAlert.classList.add("d-none");
+			}, 3000);
+		}
+
+		function generarURLTemporal(file){
+			return window.URL.createObjectURL(file);
+		}
+
+		function createFile(){
+			navigator.webkitPersistentStorage.requestQuota(1024*1024, function(){
+				window.webkitRequestFileSystem(window.PERSISTENT, 1024 * 1024, saveFile, errorResult);
+			});
+			//window.webkitRequestFileSystem(window.PERSISTENT, 1024 * 1024, saveFile, errorResult);
+		}
+
+		function errorResult(e){
+			console.log(e.message);
+			console.log(e.code);
+		}
+
+		function saveFile(localStorage){
+			localStorage.root.getFile("temp.txt", {create: true, exclusive: true}, function(dataFile){
+				console.log(dataFile);
+				console.log(dataFile.toURL());
+				/*dataFile.createWriter(function(dataContent){
+					console.log(dataContent);
+					var blob = new Blob(["Lorem Ipsum"], {type: "text/plain"});
+      				dataContent.write(blob);
+				});*/
+			}, errorResult);
+		}
+
+		function saveValueInStorage(name, artist, audioPath, imgPath){
+			// Objecto storage que permite guardar clave, valor. Los dos son strings
+			var storage = window.localStorage;
+			var song = {
+				"nombre": name,
+				"nombreArtista": artist,
+				"rutaArchivo": audioPath,
+				"imagen": imgPath
+			};
+			console.log(song);
+			var songs = storage.getItem("songs");
+			if(songs == null){
+				songs = [];
+			} else {
+				songs = JSON.parse(songs);
+			}
+			songs.push(song);
+			storage.setItem("songs", JSON.stringify(songs));
+			showAlert("alert-success", "Cancion agregada");
+			//window.location = "index.html";
+		}
+
+		function saveObjectByJSONString(numSongs, song, storage){
+			storage.setItem("song"+numSongs, JSON.stringify(song));	
+		}
+
+		function saveObjectByKeyValue(numSongs, song, storage){
+			for(key in song){
+				storage.setItem(key+numSongs, song[key]);
+			}
+		}
+
+		document.getElementById("addSong").addEventListener('click', addSong);
+
+		document.getElementById("formulario").addEventListener('submit', function(e){
+			e.preventDefault();
+		});
+	</script>
+</body>
+</html>

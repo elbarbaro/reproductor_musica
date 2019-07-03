@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<title>Misicpo</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<style type="text/css">
+		
+		body {
+			font-family: Arial;
+		}
+
+		li {
+			background-color: #4e69ff;
+			font-size: 18px;
+			margin: 8px;
+			padding: 8px;
+		}
+
+		li:hover {
+			background-color: #294aff;
+		}
+
+		.title {
+			font-size: 30px;
+			margin: 16px 8px;
+		}
+
+		/*.container-playlist {
+			padding: 0 16px;
+		}*/
+
+		.playlist {
+			display: inline-block;
+			padding: 8px;
+			color: white;
+		}
+
+		.nombre-cancion {
+			margin: 8px 0;
+		}
+
+		.nombre-artista {
+			margin: 8px 0;
+			font-size: 16px;
+		}
+
+		.cancion-seleccionada {
+			background-color: #0019a7;
+		}
+
+		.content-song {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.album-image {
+			width: 100px;
+			height: 100px;
+			margin: 8px;
+		}
+
+		.button-play {
+			background-color: white;
+		}
+
+		.button-play:hover {
+			background-color: #bac4ff;
+		}
+
+		.wrapper-image {
+			padding: 0 100px;
+		}
+
+		.empty-state {
+			height: 250px;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<h3 class="title">Lista de reproducción <strong>Barbara</strong>
+					<a class="btn btn-primary" href="agregarCancion.html">Canción <i class="fas fa-plus"></i></a>
+				</h3>
+				<div class="container-playlist">
+					<ol class="playlist">
+						<!--<li data-song="delirio_estadio">
+							<div class="content-song">
+								<div>
+									<h4 class="nombre-cancion">Delirio de estadio</h4>
+									<p class="nombre-artista">Squarepants SpongeBob</p>
+									<button class="btn button-play">Reproducir</button>
+								</div>
+								<img class="album-image" src="img/spongebob_album.jpg">
+							</div>
+						</li>
+						<li data-song="colors">
+							<div class="content-song">
+								<div>
+									<h4 class="nombre-cancion">Colors</h4>
+									<p class="nombre-artista">Beck</p>
+									<button class="btn button-play">Reproducir</button>
+								</div>
+								<img class="album-image" src="img/beck_colors.jpg">
+							</div>
+						</li>
+						<li data-song="humble">
+							<div class="content-song">
+								<div>
+									<h4 class="nombre-cancion">Humble</h4>
+									<p class="nombre-artista">Kendrik Lamar</p>
+									<button class="btn button-play">Reproducir</button>
+								</div>
+								<img class="album-image" src="img/kendrick_lamar_damn.png">
+							</div>
+						</li>
+						<li data-song="one_day">
+							<div class="content-song">
+								<div>
+									<h4 class="nombre-cancion">One Day</h4>
+									<p class="nombre-artista">Logic</p>
+									<button class="btn button-play">Reproducir</button>
+								</div>
+								<img class="album-image" src="img/logic_album.jpeg">
+							</div>
+						</li>
+						<li data-song="night_fever">
+							<div class="content-song">
+								<div>
+									<h4 class="nombre-cancion">Night Fever</h4>
+									<p class="nombre-artista">Bee Gees</p>
+									<button class="btn button-play">Reproducir</button>
+								</div>
+								<img class="album-image" src="img/bee_gees.jpg">
+							</div>
+						</li>
+						<li data-song="started_from_the_bottom">
+							<div class="content-song">
+								<div>
+									<h4 class="nombre-cancion">Started From The Bottom</h4>
+									<p class="nombre-artista">Drake</p>
+									<button class="btn button-play">Reproducir</button>
+								</div>
+								<img class="album-image" src="img/drake_album.jpg">
+							</div>
+						</li>-->
+					</ol>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<h3 class="title text-center">Estas escuchando</h3>
+				<div>
+					<div class="text-center">
+						<h5 id="tituloNombreCancion">Nombre cancion</h5>
+						<p id="tituloNombreArtista">Nombre artista</p>
+					</div>
+					<div class="wrapper-image">
+						<img id="imgMain" class="img-fluid">
+						<!--<div id="emptyMessage" class="empty-state d-flex align-items-center justify-content-center">
+							<h6>Reproduce una canción</h6>
+						</div>-->
+						<div class="progress">
+							<div id="progressSong" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+						</div>
+						<div class="row justify-content-center">
+							<div class="btn-group text-center">
+								<button id="btnAtrasar" class="btn btn-default btn-outline-dark"><i class="fas fa-backward"></i></button>
+								<button id="btnMain" class="btn btn-default btn-outline-dark"><i class="fas fa-play"></i></button>
+								<button id="btnAdelantar" class="btn btn-default btn-outline-dark"><i class="fas fa-forward"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		
+		var songs = [
+			{
+				"nombre": "Delirio de estadio",
+				"nombreArtista": "Squarepants SpongeBob",
+				"rutaArchivo": "delirio_estadio",
+				"imagen": "img/spongebob_album.jpg"
+			},
+			{
+				"nombre": "Colors",
+				"nombreArtista": "Beck",
+				"rutaArchivo": "colors",
+				"imagen": "img/beck_colors.jpg"
+			},
+			{
+				"nombre": "Humble",
+				"nombreArtista": "Kendrik Lamar",
+				"rutaArchivo": "humble",
+				"imagen": "img/kendrick_lamar_damn.png"
+			},
+			{
+				"nombre": "One Day",
+				"nombreArtista": "Logic",
+				"rutaArchivo": "one_day",
+				"imagen": "img/logic_album.jpeg"
+			},
+			{
+				"nombre": "Night Fever",
+				"nombreArtista": "Bee Gess",
+				"rutaArchivo": "night_fever",
+				"imagen": "img/bee_gees.jpg"
+			},
+			{
+				"nombre": "Started From The Bottom",
+				"nombreArtista": "Drake",
+				"rutaArchivo": "started_from_the_bottom",
+				"imagen": "img/drake_album.jpg"
+			}
+		]
+
+		var reproductor = new Audio();
+		var reproduciendo = false;
+		var ultimaCancion = "";
+		var tituloCancionH5 = document.getElementById("tituloNombreCancion");
+		var tituloArtista = document.getElementById("tituloNombreArtista");
+		var albumImg = document.getElementById("imgMain");
+		var actionMainButton = document.getElementById("btnMain");
+		var progressBar = document.getElementById("progressSong");
+		var containerPlayList = document.getElementsByClassName("playlist")[0];
+		var songDuration;
+
+		function play(e) {
+			let element = e.target;
+			let nombreCancion = element.parentElement.parentElement.parentElement.dataset.song;
+			if(ultimaCancion != ""){
+				let selector = 'li[data-song="'+ ultimaCancion + '"]';
+				console.log(selector);
+				document.querySelector(selector).classList.remove("cancion-seleccionada");	
+			}
+			element.parentElement.parentElement.parentElement.classList.add("cancion-seleccionada");
+			changeMainPlayer(e.target.parentElement.parentElement);
+			//reproduciendo = true;
+			ultimaCancion = nombreCancion;
+			reproductor.src = nombreCancion + ".mp3";
+			reproductor.play();
+		}
+
+		function hideEmptyState(){
+			//document.getElementById("emptyMessage").removeChild();
+		}
+
+		function showEmptyState(){
+			document.getElementById("emptyMessage").classList.remove("d-none");
+		}
+
+		reproductor.addEventListener('progress', function(e){
+			songDuration = e.target.duration;
+			reproduciendo = true;
+			actionMainButton.children[0].classList.remove('fa-play');
+			actionMainButton.children[0].classList.add('fa-pause');
+			//hideEmptyState();
+
+		});
+
+		reproductor.addEventListener('timeupdate', function(e){
+			let current = (e.target.currentTime/songDuration) * 100;
+			progressBar.style.width = current + "%";
+		});
+
+		reproductor.addEventListener('ended', function(e){
+			actionMainButton.children[0].classList.remove('fa-pause');
+			actionMainButton.children[0].classList.add('fa-play');
+			//showEmptyState();
+		})
+
+		function changeMainPlayer(e){
+			let nombreArtista = e.querySelector(".nombre-artista").innerHTML;
+			let nombreCancion = e.querySelector(".nombre-cancion").innerHTML;
+			let imgPath = e.querySelector(".album-image").src;
+			tituloNombreCancion.innerHTML = nombreCancion;
+			tituloNombreArtista.innerHTML = nombreArtista;
+			albumImg.src = imgPath;
+		}
+
+		function crearElemento(song){
+			let listItem = document.createElement("li");
+			listItem.dataset.song = song.rutaArchivo;
+
+			let contentSong = document.createElement("div");
+			contentSong.classList.add("content-song");
+
+			let contentInfo = document.createElement("div");
+			let nameSongH4 = document.createElement("h4");
+			nameSongH4.classList.add("nombre-cancion");
+			nameSongH4.innerHTML = song.nombre;
+			let nameArtistP = document.createElement("p");
+			nameArtistP.classList.add("nombre-artista");
+			nameArtistP.innerHTML = song.nombreArtista;
+ 			let buttonPlay = document.createElement("button");
+ 			buttonPlay.classList.add("btn");
+ 			buttonPlay.classList.add("button-play");
+ 			buttonPlay.innerHTML = "Reproducir";
+
+ 			buttonPlay.addEventListener('click', play);
+
+ 			contentInfo.appendChild(nameSongH4);
+ 			contentInfo.appendChild(nameArtistP);
+ 			contentInfo.appendChild(buttonPlay);
+
+ 			let imgAlbum = document.createElement("img");
+ 			imgAlbum.classList.add("album-image");
+ 			imgAlbum.src = song.imagen;
+
+ 			contentSong.appendChild(contentInfo);
+ 			contentSong.appendChild(imgAlbum);
+
+ 			listItem.appendChild(contentSong);
+ 			containerPlayList.appendChild(listItem);
+		}
+
+		var listItems = document.getElementsByClassName("button-play");
+		for(item of listItems){
+			item.addEventListener('click', play);
+		}
+
+		actionMainButton.addEventListener('click', function(e){
+			if(reproduciendo && !reproductor.paused){
+				console.log(e);
+				reproductor.pause();
+				e.target.children[0].classList.remove('fa-pause');
+				e.target.children[0].classList.add('fa-play');
+			} else {
+				reproductor.play();
+				e.target.children[0].classList.remove('fa-play');
+				e.target.children[0].classList.add('fa-pause');
+			}
+		});
+
+		createPlayList();
+
+		function createPlayList(){
+			songs = songs.concat(getSongsFromStorage());
+			console.log(songs);
+			for(song of songs){
+				crearElemento(song);
+			}
+		}
+
+		function getSongsFromStorage(){
+			let songsString = window.localStorage.getItem("songs");
+			if(songsString == null){
+				return [];
+			}
+			return JSON.parse(songsString);
+		}
+
+		/*var itemsSongs = document.getElementsByClassName("content-song");
+		console.log(itemsSongs);
+		for(item1 of itemsSongs){
+			console.log(item1);
+			item1.addEventListener('click', function(e){
+				console.log(e.target);
+				let nombreArtista = e.target.querySelector(".nombre-artista").innerHTML;
+				let nombreCancion = e.target.querySelector(".nombre-cancion").innerHTML;
+				let imgPath = e.target.querySelector(".album-image").src;
+				tituloNombreCancion.innerHTML = nombreCancion;
+				tituloNombreArtista.innerHTML = nombreArtista;
+				albumImg.src = imgPath;
+			});
+		}*/
+
+		/*item.addEventListener('mousedown', function(e){
+				console.log("evento mousedown");
+			});
+			item.addEventListener('mouseup', function(e){
+				console.log("evento mouseup");
+			});*/
+	</script>
+</body>
+</html>
